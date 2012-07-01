@@ -7,6 +7,16 @@
  * Copyright 2012 Jason English
  */
 /*jshint trailing:true jquery:true browser:true curly:false */
+if (!('filter' in Array.prototype)) {
+    Array.prototype.filter = function (filter, that /*opt*/) {
+        "use strict";
+		var other = [], v;
+        for (var i = 0, n = this.length; i < n; i++)
+            if (i in this && filter.call(that, v = this[i], i, this))
+                other.push(v);
+        return other;
+    };
+}
 ;(function ( $, window, document, undefined ) {
 	
 	"use strict";
