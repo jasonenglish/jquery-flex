@@ -3,9 +3,9 @@
 <head>
 	<title>jQuery plugin - Flex - Demo</title>
 	<style>
-	body {background-color:#CCC;}
-		.flex {position:relative;width:850px;min-height:300px;margin:0 auto;border:0px solid red;margin-top:100px;}
-		.flex a {background-color:white;display:block;width:100px;height:100px;border-radius:8px;position:absolute;background-repeat:no-repeat;background-position:center;border:3px solid white;cursor:pointer;}
+	body {background-color:#CCC;font-family:Verdana;}
+		.flex {position:relative;width:850px;min-height:300px;margin:0 auto;border:0px solid red;margin-top:50px;}
+		.flex a {background-color:white;display:block;width:100px;height:100px;border-radius:8px;position:absolute;background-repeat:no-repeat;background-position:center;border:3px solid white;cursor:pointer;text-align:left;text-shadow:1px 1px 20px #000;color:white;font-size:18px;font-weight:bold;text-indent:10px;line-height:30px;}
 		[bg=a] {background-image:url(http://farm8.staticflickr.com/7013/6448917381_0b754e86fb_z.jpg);}
 		[bg=b] {background-image:url(http://farm9.staticflickr.com/8156/7362866426_bf285ebd45.jpg);background-size:300px auto;}
 		[bg=c] {background-image:url(http://farm6.staticflickr.com/5117/7410370290_0935419fc3.jpg);}
@@ -17,6 +17,9 @@
 		[bg=i] {background-image:url(http://farm8.staticflickr.com/7129/7452167788_a3f6aa3104.jpg);background-size:auto 200px;}
 		[bg=j] {background-image:url(http://farm8.staticflickr.com/7153/6480022425_a8d419e663_z.jpg);background-size:auto 280px;}
 		[bg=k] {background-image:url(http://farm8.staticflickr.com/7225/7269592732_c4b7918626.jpg);background-size:auto 280px;}
+		h1, h3 {width:850px;font-weight:normal;margin:0 auto;}
+		h1 {margin-top:100px;}
+		h3 {color:#666;}
 	</style>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
 	<script src="jquery.flex.js"></script>
@@ -27,18 +30,25 @@
 	</script>
 </head>
 <body>
+	
+	<h1>Flex v0.1</h1>
+	<h3>A fluid asymmetrical animated grid plugin for jQuery</h3>
+	
 	<div class="flex">
-		<a bg="a" style="left:0px;top:0px;width:250px;height:125px;" width="325" height="175"></a>
-		<a bg="b" style="left:260px;height:100px;top:0px;width:125px;" width="250" height="175"></a>
-		<a bg="c" style="left:395px;height:250px;top:0px;width:75px;" width="125" height="350"></a>
-		<a bg="d" style="left:480px;height:75px;top:0px;width:75px;" width="175" height="150"></a>
-		<a bg="e" style="left:565px;height:125px;top:0px;width:200px;" width="200" height="250"></a>
-		<a bg="f" style="left:480px;height:200px;top:85px;width:75px;" width="150" height="225"></a>
-		<a bg="g" style="left:0px;height:100px;top:135px;width:75px;" width="305" height="150"></a>
-		<a bg="h" style="left:260px;height:75px;top:110px;width:125px;" width="200" height="200"></a>
-		<a bg="i" style="left:85px;height:140px;top:135px;width:165px;" width="200" height="140"></a>
-		<a bg="j" style="left:565px;height:150px;top:135px;width:75px;" width="125" height="275"></a>
-		<a bg="k" style="left:650px;height:75px;top:135px;width:75px;" width="75" height="200"></a>
+		<a bg="a" style="left:0px;top:0px;width:250px;height:125px;" width="325" height="175">A</a>
+		<a bg="b" style="left:260px;height:100px;top:0px;width:125px;" width="250" height="175">B</a>
+		<a bg="c" style="left:395px;height:250px;top:0px;width:75px;" width="125" height="350">C</a>
+		<a bg="d" style="left:480px;height:75px;top:0px;width:75px;" width="175" height="150">D</a>
+		<a bg="e" style="left:565px;height:125px;top:0px;width:200px;" width="200" height="250">E</a>
+		<a bg="f" style="left:480px;height:200px;top:85px;width:75px;" width="150" height="225">F</a>
+		<a bg="g" style="left:0px;height:100px;top:135px;width:75px;" width="305" height="150">G</a>
+		<a bg="h" style="left:260px;height:75px;top:110px;width:125px;" width="200" height="200">H</a>
+		<a bg="i" style="left:85px;height:140px;top:135px;width:165px;" width="200" height="140">I</a>
+		<a bg="j" style="left:565px;height:150px;top:135px;width:75px;" width="125" height="275">J</a>
+		<a bg="k" style="left:650px;height:75px;top:135px;width:75px;" width="75" height="200">K</a>
 	</div>
+	
+	<a href="https://github.com/jasonenglish/jquery-flex"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
+	
 </body>
 </html>
