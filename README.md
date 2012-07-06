@@ -4,7 +4,7 @@ Flex is an idea inspired by the old flash homepage on Adidas.com. Searching goog
 
 [View Demo](http://jsonenglish.com/projects/flex/)
 
-[Screenshot](http://cl.ly/0i0l0a3P0d2f40073e3h/Screen%20Shot%202012-07-05%20at%207.46.45%20PM.png)
+![Screenshot](http://cl.ly/0i0l0a3P0d2f40073e3h/Screen%20Shot%202012-07-05%20at%207.46.45%20PM.png)
 
 ## How to use
 
