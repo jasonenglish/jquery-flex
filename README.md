@@ -65,7 +65,7 @@ And finally, invoke the plugin
 </script>
 ```
 
-## What's Next
+## What's next
 
 - Fix bugs and head towards a stable release
 - Bounding container
