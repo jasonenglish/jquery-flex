@@ -55,7 +55,7 @@ Style them up
 
 And finally, invoke the plugin
 
-```
+```html
 <script type="text/javascript">
     $(function() {
         $(".flex").flex();
