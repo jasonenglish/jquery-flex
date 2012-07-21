@@ -1,32 +1,22 @@
+/* jshint trailing:true jquery:true browser:true curly:false */
 /**
- * jQuery Flex v0.1
+ * jQuery Flex v0.2
  * A fluid asymmetrical animated grid plugin for jQuery
  * http://jsonenglish.com
  *
  * Licensed under the MIT license.
  * Copyright 2012 Jason English
  */
-/*jshint trailing:true jquery:true browser:true curly:false */
-if (!('filter' in Array.prototype)) {
-    Array.prototype.filter = function (filter, that /*opt*/) {
-        "use strict";
-		var other = [], v;
-        for (var i = 0, n = this.length; i < n; i++)
-            if (i in this && filter.call(that, v = this[i], i, this))
-                other.push(v);
-        return other;
-    };
-}
-;(function ( $, window, document, undefined ) {
+;(function ( $, undefined ) {
 	
 	"use strict";
 
-    // Create the defaults once
-    var defaults = {
-        duration: 300,
-        padding: 10,
+	// Create the defaults once
+	var defaults = {
+		duration: 300,
+		padding: 10,
 		threshhold: 50
-    };
+	};
 
 	function Flex(element, options) {
 		this.version = '0.1';
@@ -50,8 +40,8 @@ if (!('filter' in Array.prototype)) {
 		return {
 			elm: el,
 			defaults: {
-				width: parseInt(el.css("width"),10),
-				height: parseInt(el.css("height"),10),
+				width: el.width(),
+				height: el.height(),
 				left: parseInt(el.css("left"),10),
 				top: parseInt(el.css("top"),10)
 			},
@@ -118,29 +108,29 @@ if (!('filter' in Array.prototype)) {
 	Flex.prototype.comparePositions = function(p1, p2) {
 		var r1, r2;
 			
-        r1 = p1[0] < p2[0] ? p1 : p2;
-        r2 = p1[0] < p2[0] ? p2 : p1;
-
-        return r1[1] > r2[0] || r1[0] === r2[0];
+		r1 = p1[0] <= p2[0] ? p1 : p2;
+		r2 = p1[0] <= p2[0] ? p2 : p1;
+		
+		return r1[1] >= r2[0] || r1[0] === r2[0];
 	};
 	
 	Flex.prototype.overlaps = function(a,b) {
-        var pos1 = this.getPositions( a.change ),
-            pos2 = this.getPositions( b.defaults );
-
+		var pos1 = this.getPositions( a.change ),
+			pos2 = this.getPositions( b.change || b.defaults );
+			
 		return this.comparePositions( pos1[0], pos2[0] ) && this.comparePositions( pos1[1], pos2[1] );
     };
 
-	Flex.prototype.intersectors = function(compare) {
-		var list = this.list,
+	Flex.prototype.intersectors = function(compare, compareAgainstChanges) {
+		var list = (compareAgainstChanges) ? this.changes : this.list,
 			intersectors = [];
-
+			
 		for(var x = 0; x < list.length; x++) {
-			if (list[x].elm[0] !== compare.elm[0] && this.overlaps(compare,list[x])) {
+			if (list[x].elm[0] !== compare.elm[0] && !list[x].start && !list[x].adjusted && this.overlaps(compare,list[x])) {
 				intersectors.push(list[x]);
 			}
 		}
-
+		
 		return intersectors;
     };
 	
@@ -156,9 +146,8 @@ if (!('filter' in Array.prototype)) {
 			childBelow = child.defaults.top > parent.defaults.top + parent.defaults.height,
 			childAbove = child.defaults.top + child.defaults.height < parent.defaults.top,
 			childLeftOf = child.defaults.left < parent.defaults.left,
-			childRightOf = child.defaults.left > parent.defaults.left + parent.defaults.width,
-			parentOverlapsLeftOf = parent.defaults.left + parent.defaults.width > child.defaults.left;
-
+			childRightOf = child.defaults.left > parent.defaults.left + parent.defaults.width;
+			
 		// Width
 		if (childAbove || childBelow) {
 			w = child.defaults.width;
@@ -191,7 +180,6 @@ if (!('filter' in Array.prototype)) {
 		if (childBelow || childAbove) {
 			l = child.defaults.left;
 		} else if ( childRightOf ) {
-			//l = (parent.change.left + parent.change.width) + (child.defaults.left - (parent.defaults.left + parent.defaults.width) - previousChildFix);
 			l = (parent.change.left + parent.change.width) + padding;
 		} else {
 			l = parent.change.left + parent.change.width + padding;
@@ -209,13 +197,12 @@ if (!('filter' in Array.prototype)) {
 	
 	Flex.prototype.recursion = function(start) {
 		
-		var cp, adj,
+		var cp, adj, adjustment, intersector, i, p, y,
 			cacheTimes = this.times,
 			changes = this.changes,
-			current, x = 0, t = changes.length, i, intersector,
-			moreChanges = 0,
-			adjustment;
-			
+			current, x = 0, t = changes.length,
+			moreChanges = 0;
+		
 		// if this is the first iteration
 		for(; x < t; x++) {
 			current = changes[x];
@@ -241,21 +228,30 @@ if (!('filter' in Array.prototype)) {
 					current.adjusted = true;
 				}
 				// does this element overlap with any other elements
-				i = this.intersectors(current);
-
-				for(var y = 0, t2 = i.length; y < t2; y++) {
+				i = this.intersectors(current, true);
+				
+				for(y = 0; y < i.length; y++) {
 					intersector = i[y];
 					
+					// don't make changes to the current elm
 					if (!intersector.start && intersector.elm[0] !== current.elm[0]) {
+						// calculate the css changes
 						adjustment = this.adjust(intersector, current);
-
-						for(var p = 0; p < changes.length; p++) {
+						
+						// loop through list of changes to update
+						for(p = 0; p < changes.length; p++) {
 							
 							if (intersector.elm[0] === changes[p].elm[0] && !changes[p].adjusted) {
 								cp = changes[p];
 								adj = adjustment[0];
 								
-								if (cp.change && cp.change.width === adj.width && cp.change.height === adj.height&& cp.change.left === adj.left && cp.change.top === adj.top) {
+								// if this has been changed and the change/adjustments
+								// are the same mark as adjusted
+								if (cp.change && 
+									(cp.change.width === adj.width && 
+									cp.change.height === adj.height && 
+									cp.change.left === adj.left && 
+									cp.change.top === adj.top)) {
 									changes[p].adjusted = true;
 								} else {
 									// apply adjustments to the change obj
@@ -263,7 +259,6 @@ if (!('filter' in Array.prototype)) {
 									moreChanges++;
 								}
 								break;
-								
 							}
 						}
 					}
@@ -271,21 +266,18 @@ if (!('filter' in Array.prototype)) {
 			}
 		}
 		
-        if (moreChanges) this.recursion();
+		if (moreChanges) this.recursion();
 	};
 	
 	Flex.prototype.change = function(el) {
-		var data = this.getCache(el),
+		var cache = this.getCache(el),
 			reference = [];
 		
+		// create copy of list
 		this.changes = $.extend(true, [], this.list);
 		this.first = null;
-		
-		this.recursion(data);
 
-		this.changes = this.changes.filter(function(n) {
-			if (n.change) { return n; }
-		});
+		this.recursion(cache);
 	};
 	
 	$.fn.flex = function ( options ) {
@@ -301,4 +293,4 @@ if (!('filter' in Array.prototype)) {
 		return opts.api ? p : this;
 	};
 
-})( jQuery, window, document );
+})( jQuery );
