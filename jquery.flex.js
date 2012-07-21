@@ -287,7 +287,8 @@
 		if (p) return p;
 
 		this.each(function () {
-			$(this).data("flex", new Flex( this, opts ));
+			p = new Flex( this, opts );
+			$(this).data("flex", p);
 		});
 
 		return opts.api ? p : this;
