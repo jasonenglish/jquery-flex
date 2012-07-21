@@ -17,7 +17,7 @@ Include the plugin after jQuery in your file
 <script src="https://raw.github.com/jasonenglish/jquery-flex/master/jquery.flex.js"></script>
 ```
 
-Make some elements and throw them in a div
+Create the structure of your tiles by individually placing them. As of right now it is expected each tile will be placed 10px away from each other as padding (this is to be resolved in issue #4)
 
 ```html
 <div class="flex">
@@ -35,7 +35,7 @@ Make some elements and throw them in a div
 </div>
 ```
 
-Style them up
+Sample styling
 
 ```html
 <style>
@@ -65,15 +65,12 @@ And finally, invoke the plugin
 </script>
 ```
 
-## What's next
+## What's next - 0.3
 
-- Fix bugs and head towards a stable release
-- Bounding container
-- Expanding from an elements center
-- Expanding from right side (for bounding container feature)
+- Bounding container (issue #1)
+- Padding (issue #4)
 
-Take a look at the issues tab for feature requests and bugs.
 
 ## Contributing
 
-Any help is greatly appreciated. If you have ANY suggestions, feature requests or bugs please report it. Pull away.
+Any help is greatly appreciated. Pull away.
